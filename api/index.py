@@ -31,12 +31,12 @@ class handler(BaseHTTPRequestHandler):
                 background:#111821;
                 border-radius:12px;
                 padding:30px;
-                width:350px;
+                width:360px;
                 margin:auto;
-                box-shadow:0 0 20px rgba(0,255,150,0.15);
+                box-shadow:0 0 20px rgba(0,255,150,0.2);
             }}
             .title {{
-                font-size:28px;
+                font-size:26px;
                 margin-bottom:20px;
             }}
             .price {{
@@ -44,12 +44,13 @@ class handler(BaseHTTPRequestHandler):
                 margin-bottom:10px;
             }}
             .signal {{
-                font-size:26px;
-                margin:15px 0;
+                font-size:22px;
+                margin:10px 0;
             }}
             .reason {{
                 color:#9fb3c8;
                 font-size:14px;
+                margin-top:10px;
             }}
             </style>
             </head>
@@ -80,7 +81,6 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(html.encode())
 
         except Exception as e:
-
             error = {
                 "error": str(e),
                 "traceback": traceback.format_exc()
