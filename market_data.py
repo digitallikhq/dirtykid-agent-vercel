@@ -1,43 +1,49 @@
-from indicators import calculate_ema, calculate_rsi
+import requests
 
 
-def analyze_market(snapshot):
-    prices = snapshot["closes"]
-    price = snapshot["price"]
+def get_btc_spot_price():
+    url = "https://api.coinbase.com/v2/prices/BTC-USD/spot"
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
+    data = response.json()
+    return float(data["data"]["amount"])
 
-    ema_20 = calculate_ema(prices, 20)
-    rsi_14 = calculate_rsi(prices, 14)
 
-    classification = "no_trade"
-    confidence = 50
-    reasons = ["MARKET_ANALYSIS_V3"]
-    invalidators = []
+def get_mock_closes(current_price):
+    return [
+        current_price - 220,
+        current_price - 180,
+        current_price - 210,
+        current_price - 170,
+        current_price - 160,
+        current_price - 175,
+        current_price - 140,
+        current_price - 130,
+        current_price - 145,
+        current_price - 115,
+        current_price - 105,
+        current_price - 120,
+        current_price - 90,
+        current_price - 85,
+        current_price - 95,
+        current_price - 70,
+        current_price - 75,
+        current_price - 78,
+        current_price - 76,
+        current_price - 74,
+        current_price
+    ]
 
-    if ema_20 is None or rsi_14 is None:
-        invalidators.append("Not enough candle data")
-    else:
-        reasons.append(f"Price: {price}")
-        reasons.append(f"EMA20: {round(ema_20, 2)}")
-        reasons.append(f"RSI14: {round(rsi_14, 2)}")
 
-        if price > ema_20 and 45 <= rsi_14 <= 72:
-            classification = "pullback_long"
-            confidence = 72
-            reasons.append("Price above EMA20")
-            reasons.append("RSI in healthy long zone")
-        elif price > ema_20 and rsi_14 > 72:
-            invalidators.append("RSI too hot for a clean long entry")
-        elif price <= ema_20:
-            invalidators.append("Price below EMA20")
-        else:
-            invalidators.append("No valid long setup")
+def get_market_snapshot():
+    price = get_btc_spot_price()
+    closes = get_mock_closes(price)
 
-    result = {
-        "module": "market_analyst",
-        "classification": classification,
-        "confidence": confidence,
-        "reasons": reasons,
-        "invalidators": invalidators,
+    snapshot = {
+        "symbol": "BTC-USD",
+        "price": price,
+        "closes": closes,
+        "data_version": "MOCK_V5"
     }
 
-    return result
+    return snapshot
