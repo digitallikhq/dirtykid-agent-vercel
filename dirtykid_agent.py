@@ -7,7 +7,6 @@ from paper_trade_logger import log_paper_trade
 
 
 def run_dirty_kid():
-
     account_state = {
         "open_position": False,
         "daily_trades": 0,
@@ -45,6 +44,7 @@ def run_dirty_kid():
 
     return {
         "status": "ok",
+        "agent_version": "PAPER_LOG_V1",
         "snapshot": snapshot,
         "analysis": analysis_result,
         "risk": risk_result,
