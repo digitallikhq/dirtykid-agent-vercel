@@ -21,21 +21,10 @@ def run_dirty_kid():
     )
     post_text = generate_post(execution_result, snapshot)
 
-    result = {
+    return {
         "snapshot": snapshot,
         "analysis": analysis_result,
         "risk": risk_result,
         "execution": execution_result,
         "post": post_text,
     }
-
-    return result
-
-
-if __name__ == "__main__":
-    result = run_dirty_kid()
-    print(result["snapshot"])
-    print(result["analysis"])
-    print(result["risk"])
-    print(result["execution"])
-    print(result["post"])
