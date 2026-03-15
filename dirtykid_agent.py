@@ -14,14 +14,28 @@ def run_dirty_kid():
     }
 
     snapshot = get_market_snapshot()
+
     analysis_result = analyze_market(snapshot)
-    risk_result = evaluate_risk(analysis_result, account_state)
-    execution_result = decide_execution(
-        analysis_result, risk_result, snapshot, account_state
+
+    risk_result = evaluate_risk(
+        analysis_result,
+        account_state
     )
-    post_text = generate_post(execution_result, snapshot)
+
+    execution_result = decide_execution(
+        analysis_result,
+        risk_result,
+        snapshot,
+        account_state
+    )
+
+    post_text = generate_post(
+        execution_result,
+        snapshot
+    )
 
     return {
+        "status": "ok",
         "snapshot": snapshot,
         "analysis": analysis_result,
         "risk": risk_result,
