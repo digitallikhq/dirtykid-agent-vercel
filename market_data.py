@@ -1,49 +1,48 @@
 import requests
 
 
+COINBASE_CANDLES = "https://api.exchange.coinbase.com/products/BTC-USD/candles"
+
+
 def get_btc_spot_price():
     url = "https://api.coinbase.com/v2/prices/BTC-USD/spot"
-    response = requests.get(url, timeout=10)
-    response.raise_for_status()
-    data = response.json()
+    r = requests.get(url, timeout=10)
+    r.raise_for_status()
+    data = r.json()
     return float(data["data"]["amount"])
 
 
-def get_mock_closes(current_price):
-    return [
-        current_price - 220,
-        current_price - 180,
-        current_price - 210,
-        current_price - 170,
-        current_price - 160,
-        current_price - 175,
-        current_price - 140,
-        current_price - 130,
-        current_price - 145,
-        current_price - 115,
-        current_price - 105,
-        current_price - 120,
-        current_price - 90,
-        current_price - 85,
-        current_price - 95,
-        current_price - 70,
-        current_price - 75,
-        current_price - 78,
-        current_price - 76,
-        current_price - 74,
-        current_price
-    ]
+def get_btc_candles():
+    params = {
+        "granularity": 60,
+        "limit": 100
+    }
+
+    r = requests.get(COINBASE_CANDLES, params=params, timeout=10)
+    r.raise_for_status()
+
+    candles = r.json()
+
+    closes = []
+
+    for candle in candles:
+        close_price = candle[4]
+        closes.append(close_price)
+
+    closes.reverse()
+
+    return closes
 
 
 def get_market_snapshot():
     price = get_btc_spot_price()
-    closes = get_mock_closes(price)
+    closes = get_btc_candles()
 
     snapshot = {
         "symbol": "BTC-USD",
         "price": price,
         "closes": closes,
-        "data_version": "MOCK_V5"
+        "data_version": "COINBASE_LIVE"
     }
 
     return snapshot
