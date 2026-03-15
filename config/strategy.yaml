@@ -1,0 +1,40 @@
+symbol: BTC-USD
+market_type: spot
+position_size_usd: 10
+max_open_positions: 1
+max_trades_per_day: 2
+max_daily_loss_usd: 5
+max_losing_trades_per_day: 2
+default_stop_loss_pct: 1.0
+default_take_profit_pct: 2.0
+
+allowed_setups:
+  - breakout_long
+  - pullback_long
+  - sweep_reclaim_long
+
+forbidden:
+  - leverage
+  - margin
+  - shorting
+  - options
+  - averaging_down
+  - revenge_trading
+  - size_increase_after_loss
+
+posting:
+  max_posts_per_day: 4
+  max_posts_per_hour: 1
+  min_minutes_between_posts: 45
+
+  category_limits:
+    morning_observation: 1
+    trade_open: 1
+    trade_close: 1
+    daily_recap: 1
+
+  priority_order:
+    - trade_open
+    - trade_close
+    - daily_recap
+    - morning_observation

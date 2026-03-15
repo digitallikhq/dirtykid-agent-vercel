@@ -1,0 +1,38 @@
+All internal agent outputs must use this exact JSON structure.
+
+For market analyst:
+
+{
+  "module": "market_analyst",
+  "classification": "breakout_long | pullback_long | sweep_reclaim_long | no_trade",
+  "confidence": 0,
+  "reasons": ["", ""],
+  "invalidators": ["", ""]
+}
+
+For risk manager:
+
+{
+  "module": "risk_manager",
+  "approved": true,
+  "position_size_usd": 10,
+  "stop_loss_pct": 1.0,
+  "take_profit_pct": 2.0,
+  "reasons": ["", ""],
+  "blocks": []
+}
+
+For execution gate:
+
+{
+  "module": "execution_gate",
+  "action": "BUY | HOLD | SELL | EXIT | PAUSE",
+  "symbol": "BTC-USD",
+  "position_size_usd": 10,
+  "reason": "",
+  "post_needed": true
+}
+
+Never return markdown.
+Never return explanations outside JSON.
+Never invent fields.
