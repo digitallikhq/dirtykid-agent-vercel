@@ -1,24 +1,39 @@
 from http.server import BaseHTTPRequestHandler
 import json
-from dirtykid_agent import run_dirty_kid
+import traceback
 
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        result = run_dirty_kid()
+        try:
+            from dirtykid_agent import run_dirty_kid
 
-        self.send_response(200)
-        self.send_header("Content-type", "application/json")
-        self.end_headers()
+            result = run_dirty_kid()
 
-        response = {
-            "status": "ok",
-            "post": result["post"],
-            "snapshot": result["snapshot"],
-            "analysis": result["analysis"],
-            "risk": result["risk"],
-            "execution": result["execution"],
-        }
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
 
-        self.wfile.write(json.dumps(response).encode())
-        return
+            response = {
+                "status": "ok",
+                "post": result["post"],
+                "snapshot": result["snapshot"],
+                "analysis": result["analysis"],
+                "risk": result["risk"],
+                "execution": result["execution"],
+            }
+
+            self.wfile.write(json.dumps(response).encode())
+
+        except Exception as e:
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+
+            response = {
+                "status": "error",
+                "error": str(e),
+                "traceback": traceback.format_exc()
+            }
+
+            self.wfile.write(json.dumps(response).encode())
