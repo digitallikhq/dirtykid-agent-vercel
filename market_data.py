@@ -10,7 +10,7 @@ def analyze_market(snapshot):
 
     classification = "no_trade"
     confidence = 50
-    reasons = []
+    reasons = ["MARKET_ANALYSIS_V3"]
     invalidators = []
 
     if ema_20 is None or rsi_14 is None:
