@@ -1,16 +1,32 @@
+from indicators import calculate_ema, calculate_rsi
+
+
 def analyze_market(snapshot):
+    prices = snapshot["closes"]
     price = snapshot["price"]
 
-    if price > 0:
-        classification = "no_trade"
-        confidence = 50
-        reasons = ["Live price received", "Strategy logic not connected yet"]
-        invalidators = ["No indicator engine yet", "No candle history yet"]
+    ema_20 = calculate_ema(prices, 20)
+    rsi_14 = calculate_rsi(prices, 14)
+
+    classification = "no_trade"
+    confidence = 50
+    reasons = []
+    invalidators = []
+
+    if ema_20 is None or rsi_14 is None:
+        invalidators.append("Not enough candle data")
     else:
-        classification = "no_trade"
-        confidence = 0
-        reasons = ["Invalid price data"]
-        invalidators = ["Price feed failure"]
+        reasons.append(f"Price: {price}")
+        reasons.append(f"EMA20: {round(ema_20, 2)}")
+        reasons.append(f"RSI14: {round(rsi_14, 2)}")
+
+        if price > ema_20 and rsi_14 < 70:
+            classification = "pullback_long"
+            confidence = 68
+            reasons.append("Price above EMA20")
+            reasons.append("RSI below overbought threshold")
+        else:
+            invalidators.append("No valid long setup")
 
     result = {
         "module": "market_analyst",
