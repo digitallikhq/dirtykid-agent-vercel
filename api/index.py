@@ -1,7 +1,6 @@
 import json
 import traceback
 from http.server import BaseHTTPRequestHandler
-from dirtykid_agent import run_dirty_kid
 
 
 class handler(BaseHTTPRequestHandler):
@@ -28,6 +27,8 @@ class handler(BaseHTTPRequestHandler):
                 self.send_header("Access-Control-Allow-Origin", "*")
                 self.end_headers()
                 return
+
+            from dirtykid_agent import run_dirty_kid
 
             result = run_dirty_kid()
             self._send_json(result, 200)
