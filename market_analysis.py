@@ -20,11 +20,15 @@ def analyze_market(snapshot):
         reasons.append(f"EMA20: {round(ema_20, 2)}")
         reasons.append(f"RSI14: {round(rsi_14, 2)}")
 
-        if price > ema_20 and rsi_14 < 70:
+        if price > ema_20 and 45 <= rsi_14 <= 68:
             classification = "pullback_long"
-            confidence = 68
+            confidence = 72
             reasons.append("Price above EMA20")
-            reasons.append("RSI below overbought threshold")
+            reasons.append("RSI in healthy long zone")
+        elif price > ema_20 and rsi_14 > 68:
+            invalidators.append("RSI too hot for a clean long entry")
+        elif price <= ema_20:
+            invalidators.append("Price below EMA20")
         else:
             invalidators.append("No valid long setup")
 
