@@ -27,10 +27,10 @@ def get_mock_closes(current_price):
         current_price - 85,
         current_price - 95,
         current_price - 70,
-        current_price - 68,
-        current_price - 66,
-        current_price - 64,
-        current_price - 62,
+        current_price - 75,
+        current_price - 78,
+        current_price - 76,
+        current_price - 74,
         current_price
     ]
 
@@ -43,7 +43,7 @@ def get_market_snapshot():
         "symbol": "BTC-USD",
         "price": price,
         "closes": closes,
-        "data_version": "MOCK_V4"
+        "data_version": "MOCK_V5"
     }
 
     return snapshot
